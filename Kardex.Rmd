@@ -1,0 +1,31 @@
+---
+#Kardex. Michelle Avendaño Ortiz
+---
+
+#Primer Semestre:
+   
+##Materia:                        Calificción:
+   
+###*Programación Actuarial I             10
+###*Introducción Actuarial                7
+###*DHPC                                  9
+###*Conceptos de Cálculo                 10
+###*Matemáticas Básicas                  10
+###*Problemas de Mat. Básicas            10
+     
+
+#Segundo Semestre:
+
+##Materia:                       Calificación:
+   
+###*Programación Actuarial II             7
+###*Teoría del Intéres                    7
+###*Microeconomía                        10
+###*Cálculo Diferencial                   8
+###*Geometría Analítica                  10
+###*Teoría de Ecuaciones                  9
+    
+   
+    
+
+
