@@ -379,3 +379,272 @@ x;y
 x*y
 x/y
 x%*%y
+
+#estructuras de contol
+#if else: probar una condicion
+#for: ejecuta un ciclo de un determinado numero de veces
+#while: ejecuta un ciclo mientras se cumpla una condicion
+#repeat: ejecuta un ciclo infinito
+#break; termina la ejecucion de un ciclo
+# next: "salta" una iteraci??n de un ciclo ---->en repit
+#return: sale de una funcion 
+
+
+x<-c("a","b","c","d")
+for(i in 1:4){
+  print(x[i])
+}
+
+for(i in seq_along(x)){
+  print(x[i])
+}
+
+for(letra in x){
+  print(letra)
+}
+
+for(i in 1:4) print(x[i]) #no se utiliza llaves por que  solo utiliz?? una condici??n.
+
+
+
+s<- matrix(1:6,2,3)
+s
+for(i in seq_len(nrow(s))){
+  for(j in seq_len(ncol(s))){
+    print(s[i,j])
+  }
+}
+
+
+#ciclo while: repetir instrucciones mientras no se cumple una condici??n
+
+z<-5
+while(z>=3 && z<=10){
+  
+  print(z)
+  moneda<-rbinom(1,1,0.5)  #rbinom crea numeros aleatorios
+  if(moneda==1){#caminata aleatoria
+    z<- z+1
+  } else {
+    z<- z-1
+  }
+}
+
+#  rbinom(no. de datos, parametros, probabilidad de exito) genera numeros aleatorios
+# == dice igual l??gico
+#&& operaciones con verdadero falso(condicion)
+#& trabajamos con un vector y el resultado sera un vector
+
+
+
+z<-5
+while(z>=3 && z<=10){
+  print(z)
+  moneda<-rbinom(1,1,0.5)
+  if(moneda==1){#caminata aleatoria
+    z<- z+1
+  } else {
+    z<- z-1
+  }
+}
+
+z<-5
+while(z>=3 && z<=10){
+  print(z)
+  y<-c(y,z)
+  moneda<-rbinom(1,1,0.5)
+  if(moneda==1){#caminata aleatoria
+    z<- z+0.5
+  } else {
+    z<- z-0.5
+  }
+}
+y
+
+plot(y,type="l")  #crea la grafica de el vector y
+
+arriba=0
+abajo=0
+for (i in 1:100){
+  z<-5
+  while(z>=3 && z<=10){
+    print(z)
+    y<-c(y,z)
+    moneda<-rbinom(1,1,0.5)
+    if(moneda==1){#caminata aleatoria
+      z<- z+0.5
+    } else {
+      z<- z-0.5
+    }
+  }
+  y
+  
+  if (z=10) {arriba<-c(arriba+1)}
+  else {abajo<-c(abajo+1)}
+  
+}
+arriba
+abajo
+
+#estructura de control: repeat
+x0<- 1
+tol <- 1e-8
+repeat{
+  x1<- CalculaEstimado(x0)
+  if(abs(x1-x0)< tol)
+  {break}
+  else
+  {x0<-x1}
+}
+
+#se utiliza next para no hacer iteraci??n en un ciclo
+for(i in 1:100)
+{if (1<=20)
+{next}
+  #otras instrucciones
+}
+
+
+#creacion de Funciones (checar pag 42 y copiar)
+suma2<- function(x,y)
+{x+y}
+
+mayor10<-function(x)
+{validos<-x>10
+x[validos]}
+mayor10(56)
+
+mayor <- function (x,n-10) {
+  x[x>10]
+}
+
+promedioCol<-function(x,quitarNA =TRUE){
+  nc<-ncol(x)
+  medias<-vector("numeric",nc)
+  for (i in 1:nc){
+    medias[i]<-mean(x[,i],na.rm=quitarNA)
+    
+  }
+  medias
+}
+
+
+#evaluacion perezosa
+f<- function(a,b){
+  a^2
+}
+f(2)
+f<-function(a,b){
+  print(a)
+  print(b)
+}
+f(3)
+
+
+# el argumento "..."
+myplot<-function(x,y,type="l",...){
+  plot(x,y,type = type,...)}
+
+args(paste) #pega un texto con otro separado con un espacio sep=""
+function(...,sep="",collapse=NULL)
+  NULL
+
+
+args(paste)
+function(...,sep="",collapse=NULL)
+  NULL
+
+paste("a","b",sep=":")
+paste("a","b",se=":")
+
+args(cat)
+funtion(...,file="",sep="",fill=FALSE,labels=NULL,append=FALSE)
+NULL
+
+?formatC
+
+# source("funcion")= sirve para llamar una funci??n en otra funci??n
+
+
+#Scoping Rules
+lm #Esta guardada en stats 
+lm <- function(x) {x*x}
+lm
+rm(lm) #borra la funci??n 
+lm  #te ense??a la original
+
+search() #lista de entornos, Orden de lista
+library(stats)  #pasa a segundo lugar el paquete que estes cargando
+
+#El ambito lexicol??gico en R significa que Los valores de las variables
+#libres son buscados en el entorno de trabajo en el que la funcion esta definida
+
+
+hacer.potencia <- function(n){
+  potencia <- function(x){
+    x^n
+  }
+  potencia
+}
+
+cubica <- hacer.potencia(3)
+cuadrada <- hacer.potencia(2)
+
+cubica(3)
+cuadrada(3)
+
+#??Qu?? es el entorno de una funci??n?
+ls(environment(cubica))
+get("n", environment(cubica))
+
+ls(environment(cuadrada))
+get("n", environment(cuadrada))
+
+y <- 10
+
+f <- function(x){
+  y <-2
+  y^2+g(x)
+}
+
+g <- function(x){
+  x*y
+}
+
+f(3)
+
+#Estandares de escritura
+#Sangria
+#Tama??o de las funciones:
+#limitar a una sola actividad
+#Leer datos, separarlos, procesarlos, generar un reporte.
+    #Fechas y tiempo en R
+      #Fecha se representan con la clase Date
+      #Los tiempos con las clases POSIXct o POSIXlt
+          #POSIXct es un entero muy granse; util al guardae los datos en un data frame
+          #POSIXlt es como una lista y guarda un conjunto de informaci??n
+#Dates and Times
+x <- as.Date("1970-01-01")
+x
+unclass(x)
+unclass(as.Date("1970-01-02"))
+        
+date()
+as.POSIXct()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
