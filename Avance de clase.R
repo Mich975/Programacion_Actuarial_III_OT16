@@ -621,8 +621,8 @@ f(3)
     #Fechas y tiempo en R
       #Fecha se representan con la clase Date
       #Los tiempos con las clases POSIXct o POSIXlt
-          #POSIXct es un entero muy granse; util al guardae los datos en un data frame
-          #POSIXlt es como una lista y guarda un conjunto de informaci??n
+    #POSIXct es un entero muy granse; util al guardae los datos en un data frame
+    #POSIXlt es como una lista y guarda un conjunto de informaci??n
 #Dates and Times
 x <- as.Date("1970-01-01")
 x
@@ -632,11 +632,277 @@ unclass(as.Date("1970-01-02"))
 date()
 as.POSIXct()
 
+#Funciones de ciclo
+#lapply: Aplica una funci??n a todos los elementos de una lista
+#sapply: Lo mismo que lapply pero intenta simplificar el resultado
+#apply: Aplica una funcion dentro de los margenes de un arreglo
+#tapply: Aplica la funcion 
+
+lapply
+#function (X, FUN, ...) 
+#{
+ #   FUN <- match.fun(FUN)
+  #  if (!is.vector(X) || is.object(X)) 
+   #     X <- as.list(X)
+# .Internal(lapply(X, FUN))
+# }
+# <bytecode: 0x1020a13c0>
+  #  <environment: namespace:base>
+#coercionar(cambia un objeto a otro (as.list(x)))
+#match.fun(FUN) buscara una funcion que tu nombraste en R
+#   .internal = lo resuelve como c y lo devuelve en R
+# rnorm : numeros aleatorios en una distribucion normal
+x <- list(a=1:5,b=rnorm(10000))
+lapply(x,mean)
+
+x <- list(a=1:5,b=rnorm(10),c=rnorm(10,1),d=rnorm(10,2))
+lapply(x,mean)
+sapply(x,mean)
+#runif : genera n??meros aleatorios con distribucion uniforme entre 0 y 1
+x <- 1:4
+lapply(x,runif)
+lapply(x,runif,max=15,min=5) #genera # aleatorios entre 5 y 15
+#Sapply: simplifica el resultado de lapply
+
+x <- 1:4
+lapply(x,runif, max=15, min=5)
+sapply(x,runif, max=15, min=5)
+
+#apply: se utiliza para evaluar una funci??n, manera mas general
+str(apply)
+#function (X, MARGIN, FUN, ...) 
+#margen 2 saca el promedio de las columnas
+#margen 1 saca el promedio de las filas
+#columnas son las variables
+#filas son las observaciones
+x <- matrix(rnorm(200),20,10)
+apply(x,2,mean)
+apply(x,1,mean)
+#Medias y sumas de filas/columnas
+    #Para sumas y medias de dimensiones de una matriz
+#       rowSums = apply(x,1,sum),
+#       rowMeans = apply(x,1,mean)
+#       ColSums = apply(x,2,sum)
+#       ColMean = apply(x,2,mean)
+
+# quantile num que esta debajo del porcentaje dado
+x <- matrix(rnorm(200),20,10)
+apply(x,1,quantile,probs=c(0.25,0.75))
+
+a <- array(rnorm(2*2*10),c(2,2,10))
+apply(a,c(2,3), mean)
+rowMeans(a,dims = 2)
+
+#mapply
+
+#FUN es la funcion a aplicar
+#MoreArg lista de otros argumentos
+
+list(rep(1,4),rep(2,3),rep(3,2),rep(4,1))
+mapply(rep,1:4,4:1)
+ #Vectorizar una funci??n
+noise <- function(n,mean,sd){
+    rnorm(n,mean,sd)
+}
+noise(5,1,2)
+noise(1:5,1:5,2)
+
+mapply(noise,1:5,1:5,2)
+
+#tapply
+# function (X, INDEX, FUN = NULL, ..., simplify = TRUE) 
+#   X es un vector
+#   INDEX es un factor o lista de factores
+#   ... otros argumentos a pasar a la fun
+#   simplify simplifica los resuldatos
+
+x <- c(rnorm(10),runif(10),rnorm(10,1))
+
+f <- gl(3,10)
+
+f
+
+tapply(x,f, mean)
+tapply(x,f,mean, simplify = F)
 
 
+#str(split)
+#function (x, f, drop = FALSE, ...)  
+
+# x es un vector, lista o data frame
+# f: es un factor o lista de factores
+# drop: indica si los factores vacios deberian de omitirse
+
+x <- c(rnorm(10),runif(10),rexp(10))
+
+f <- gl(3,10)
+
+f
+split(x,f)
+
+lapply(split(x,f),mean)
+
+library(datasets)
+head(airquality)
+s <- airquality
+n <- s$Month
+b <- split(x,n)
+lapply(b,function(x) colMeans(x[,1:3]))
+sapply(b,function(x) colMeans(x[,1:4],na.rm = T))
+
+#Manejo de errores
+#massage:una nootificacion generica que se produce, el c??digo sigue corriendo
+#warning:algo esta nal, pero no necesariamente es fatal, el codigo sigue corriendo
+#error:un aviso de que un problema
+#condiction 
+log(-1)
+#[1] NaN
+#Warning message:
+   # In log(-1) : Se han producido NaNs (no existe logaritmo de un num negativo)
+imprimeMSJ <- function(x){
+    if(x>0)
+        print("x es mayor que 0")
+    else
+        print("x es menor o igual a 0")
+    invisible(x)
+}
+imprimeMSJ(1)
+
+imprimeMSJ2 <- function(x){
+    if(is.na(x))
+        print("x es un valor faltante")
+    else if(x>0)
+        print("x es mayor que 0")
+    else
+        print("x es menor o igual a 0")
+    invisible(x)
+}
+imprimeMSJ(1)
+
+x <- log(-1)
+imprimeMSJ2(x)
+#Herramientas para depurar
+#traceback
+#debug
+#browser
+#trace
+#recover
+
+#traceback
+
+mean(x)
+#Error in mean(x) : objeto 'x' no encontrado
+> traceback()
+#1: mean(x)
+options(error = recover)
+?Error
+?options
+read.csv("perritosgay")
+install.packages("swirl")
+library("swirl")
+swirl()
+
+####
+#str: Muestra una forma compacta de la estructura interna de un objeto
+str(str)
+str(lm)
+str(ls) #ls crea una lista
+x <- rnorm(100)
+str(x) #caracteristicas de que es este objeto
+summary(x)
+f <- gl(40,10) #lista de factores 
+f
+str(f)
+summary(f)
+str(airquality)
+
+m <- matrix(rnorm(100),10,10)
+m
+str(m)
+s <- split(airquality,airquality$Month)
+s
+str(s)
+
+#Generar n??meros aleatorios
+#rnorm: genera numeros aleatorios
+#dnorm: probabilidad de que una variable aleatoria de un valor especifico
+#pnorm: probabilidad de que un numero sea mayor qu otro
+#rpois:: genera variables aleatorias Poisson con una tasa dada, lo mas probable que pueda pasar
+        #num de exitos en un intervalo de tiempo
+# d densidad
+#r generar una variable aleatoria
+#p para la distribucion acumulativa probabilidad de que sea menor o igual
+#q para el cuantil de una funcion
+
+x <- rnorm(10)
+x
+as.numeric(as.integer(probs*10000))/10
+y <- rnorm(10,50,5)
+y
+summary(x)
+summary(y)
+
+set.seed(1) #establecer semilla, semilla =1
+rnorm(5)
+set.seed(2) #para poder replicar los numeros aleatorios
+rnorm(5)
+set.seed(1)
+rnorm(5)
+
+normal1 <- rnorm(10000)
+normal2 <- rnorm(10000,10,5)
+hist(normal1) #manda a graficar un histograma de frecuencia de los factores
+summary(normal1)
+hist(normal2)
+summary(normal2)
+rpois(10,1) #distribuci??n Poisson
+poisson1 <- rpois(10000,1)
+poisson2 <- rpois(10000,10)
+hist(poisson1)
+hist(poisson2)
+ppois(2,2)
+ppois(4,2)
+ppois(6,2)
+hist(rpois(10000,2))
+ppois(0,2)
+?ppois
+for(i in 0:11){print(dpois(i,2))}
+
+hist(runif(10000,10,20)) #Uniforme entre un minimo de 10 y max de 20 como se
+                            #acomodan los datos.
+#Modelo lineal tengo una variable la multi por una constante y le sumo una constante
+
+set.seed(20)
+x <- rnorm(100,0,1)
+e <- rnorm(100,0,2)
+y <- 0.5 + 2*x+e
+plot(x,y)
+
+z <- 0.5 + 2*x
+plot(x,z)
+plot(z,y)
+
+set.seed(20)
+x <- rnorm(100,0,1)
+e <- rnorm(100,0,50)
+y <- 0.5 + 2*x+e
+plot(x,y)
+
+set.seed(10)
+x <- rbinom(100,1,0.5) # numero de exitos en una cierta cantidad de intentos
+                    #(cantidad,tama??o(intentos),probabilidad de exito) 
+e <- rnorm(100,0,1)
+y <- 0.5 + 6*x + e
+summary(y)
+plot(x,y, main="Modelo Lineal", col="dark red")
 
 
-
+set.seed(1)
+x <- rnorm(100)
+log.mu <- 0.5 + 0.3*x
+y <- rpois(100,exp(log.mu)) #Llamar poisson
+summary(y)
+plot(x,y,main="Modelo Poisson",col="forestgreen")
 
 
 
