@@ -1304,4 +1304,4 @@ library(Hmisc)
 data$zipGrupo <- cut2(data$zipCode, g=4)
 table(data$zipGrupo)
 
-
+s
