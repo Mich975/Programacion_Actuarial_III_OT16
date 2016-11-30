@@ -904,13 +904,404 @@ y <- rpois(100,exp(log.mu)) #Llamar poisson
 summary(y)
 plot(x,y,main="Modelo Poisson",col="forestgreen")
 
+#Muestreo: tomar al azar dentro de un grupo de valores
+set.seed(1)
+sample(1:10,4)
+sample(letters,5)
+#permutacion: diferentes formas que se pueden ordenar un conjunto de numeros
+sample(1:10) # hay 10! de formas
+sample(1:10,replace = TRUE) #hay 10^10 formas
+
+#Perfilaje
+#??Por qu?? mi codigo es lento?, perfilaje(profiling)
+#system.time(), devuelve la cantidad de tiempo que le toma al sistema evaluar una
+    #expresion
+#regresa un objeto de calse proc_time
+    #user time: tiempo que ocupo la expresion en el CPU
+    #elapsed time: tiempo en el reloj
+system.time(readLines("http://www.fcfm.buap.mx"))
+
+hilbert <- function(n){
+    i <- 1:n
+    1/outer(i-1,i,"+")
+}
+
+x <- hilbert(1000)
+system.time(x <- hilbert(1000))
+system.time(svd(x))
+
+#Perfilador de R
+     #Rprof cada 2 segundo te dice en que estas trabajando
+
+#DEPURACION DE DATOS
+ #Obtenci??n de datos
+ #Datos bruto
+    #Un archivo binario que entrega como resultado una maquina de medici??n
+
+#Datos ordenados
+    #cada variable medida se encuentra en una columna
+    #cada observaci??n de esa variable, debe aparecer en una fila distinta
+    #Debe haber una tabla para cada tipo de variable
+
+#Libro de c??digo
+#   Informaci??n acerca de las variables en la base de datos ordenada
+#   Informaci??n acerca de las s??ntesos que se realizaron
+#   Informaci??n acerca del dise??o experimental utilizado
+#TIPS
+#   Un formato com??n para este documento es un archivo de Word/texto
+#   Tiene una secci??n llamada "Dise??o experimental"
+
+getwd()
+tail(list.files(),2)
+setwd("./data.R")
+getwd()
+
+setwd("../")
+getwd()
+setwd("~")
+getwd()
+
+#file.exists("nombreDirectotio") revisa si el directorio existe
+#dir.create("nombreDirectorio") crea un directorio si no existe
+
+
+if (file.exists("data") == FALSE){
+    dir.create("data")
+}
+
+if (!file.exists("data")){
+    dir.create("data")
+}
+file.exists("data")
+
+#download.file(), descarga un archivo desde internet, ayuda a la replicaci??n, parametros(url, )
+
+#Carga de archivos
+# read.table, es el principal para cargar y leer datos, flexible y robusta, requiere mas parametros
+
+#Algunos parametros importantes:
+# quote- le dice a r si existe un comentario (quote=""), no hay comentarios
+# na.strings, establece que el caracter que corresponde a valores faltantes
+# nrows, dice la cantidad de filas a leer del archivo
+# skip- una cantidad de filas a evitar antes antes de iniciar la lectura
+
+install.packages("rJava")
+install.packages("xlsx")
+library(rJava)
+
+
+
+######  26-10-16  ############
+#funcion Write
+#formato XML: almacenar datos, 
+# etiquetas: inicio, cierre, vacias
+
+
+install.packages("XML")
+library(XML)
+url<-"http://www.w3schools.com/xml/simple.xml"
+data<- xmlTreeParse(url, useInternalNodes = TRUE)
+nodoRaiz<-xmlRoot(data)
+xmlName(nodoRaiz)
+names(nodoRaiz)
+
+#extraccion de datos
+xmlSApply(nodoRaiz,xmlValue)# te da lo que esta almacenado en ese nodo
+
+# XPath:
+# /nodo ,nodo de nivel superior
+# //
+
+
+#obtener precios y nombre+
+xpathSApply(nodoRaiz,"//name",xmlValue)
+
+xpathSApply(nodoRaiz,"//price",xmlValue)
+
+
+# http://www.start.berkel
+
+
+# Archivo Json: 
+install.packages("jsonlite")
+library(jsonlite)
+jsonData<-fromJSON("http://api.github.com/users/Losiram13/repos")
+names(jsonData)
+
+jsonData$name
+
+iris
+#Conversion a json
+myjson<- toJSON(iris, pretty = TRUE)
+cat(myjson)
+
+#conversion desde json a dataframe
+iris2<- fromJSON(myjson)
+head(iris2)
+
+##########27-10-16############333
+#Data.table hereda de dataframe todas las funciones que lo aceptan.
+install.packages("data.table")
+library(data.table)
+DF=data.frame(x=rnorm(9),y=rep(c("a","b","c"),each=3),z=rnorm(9))
+DF
+DT=data.table(x=rnorm(9),y=rep(c("a","b","c"),each=3),z=rnorm(9))
+head(DT,3)
+tables()
+DT[2,]
+DT[DT$y=="a"] #datos que tengan valores igual a "a"
+
+DT[DT$y=="b"]
+DT[DT$y=="a"]
+DT[c(2,3)]
+DT[,c(2,3)]
+
+
+#subconjunto de columnas
+#el argumento que se pone despues de la coma es llamado una expresion
+#en r una expresion es una coleccion de declaraciones delimitada por llaves
+{x=1
+    y=5}
+DT[,list(mean(x),sum(z))]
+DT[,table(y)]
+DT[,w:=z^2]
+DT
+
+DT2<-DT
+DT[,y:=2]
+DT
+head(DT)
+head(DT2)=tambien cambia los datos, si modificas el original
+DT[,m:={tmp<-(x+z);log2(tmp+5)}]
+DT
+DT[,a:=x>0]
+DT
+DT[,b:=mean(x+w),by=a]
+DT
+
+set.seed(123)
+DT<-data.table(x=sample(letters[1:3],1E5,TRUE))
+DT[,.N,by=x] #crea una funcion .N y cuenta cuantas valores dio de cada variable
 
 
 
 
+library(swirl)
+install_from_swirl("Getting_and_Cleaning_Data")
+
+Leaving swirl now. Type swirl() to resume.
 
 
+# lectura para trabajar con datos : http://vita.had.co.nz/papers/tidy-data.pdf
+
+DT<- data.table(x=rep(letters[1:3],each=100),
+                y=rnorm(300))
+setkey(DT,x) 
+DT['a']
+
+DT1<- data.table(x=c('a','a','b','dt1'),y=1:4)
+DT2<-data.table(x=c('a','b','dt2'),z=5:7)
+setkey(DT1,x);set2key(DT2,x)
+merge(DT1,DT2) #variables que aparecen en una y otra tabla
+
+set.seed(1)
+df_gde<-data.frame(x=rnorm(1E6),y=rnorm(1E6))
+file<-tempfile()
+write.table(df_gde,file=file,row.names=F, col.names=T,sep="\t",quote=F)
+system.time(fread(file))
+system.time(read.table(file,header = T,sep="\t"))
 
 
+##otro formato para bases de datos: (mySQL)
+#bases de datos, Tablas 
+
+install.packages("RMySQL")
+library(RMySQL)
+ucscDb<-dbConnect(MySQL(),user="genome",
+                  host="genome-mysql.cse.ucsc.edu")
+result<-dbGetQuery(ucscDb,"show databases;");dbDisconnect(ucscDb);
+result
+
+#download.file()
+#   descarga archivos de internet
+#   incluso si se puede hacer a mano, ayuda para la replicabilidad
+install.packages("data.table")
+library(data.table)
+
+DT <- data.table(x = rep(letters[1:3],each = 100),
+y = rnorm(300))
+setkey(DT,x)
+DT['a']
+
+DT1 <- data.table(x=c('a','a','b','dt1'),y=1:4) 
+DT2 <- data.table(x=c('a','b','dt2'), z= 5:7)
+setkey(DT1,x); setkey(DT2,x)
+merge(DT1,DT2)
+
+set.seed(1)
+df_gde <- data.frame(x=rnorm(1E6), y=rnorm(1E6))
+file <- tempfile()
+write.table(df_gde, file= file, row.names = F, col.names = T, sep="\t",quote=F)
+system.time(fread(file))
+system.time(read.table(file,header = T,sep = "\t"))
+
+#mySQL
+#formato para bases de datos
+install.packages("RMySQL")
+library(RMySQL)
+ucscDb <- dbConnect(MySQL(),user="genome",host="genome-mysql.cse.ucsc.edu")
+result <- dbGetQuery(ucscDb,"show databases;"); dbDisconnect(ucscDb);
+result
+
+hg19 <- dbConnect(MySQL(),user="genome",db="hg19",host="genome-mysql.cse.ucsc.edu")
+tablas <- dbListTables(hg19)
+length(tablas)
+tablas[1:3]
+#Obetener dimensiones de una tabla en especifico.
+dbListFields(hg19,"affyU133Plus2")
+
+#Leer desde la tabla
+affyData <- db
+dbDisconnect(hg19)
+
+#HDF5 almacena grandes bases de datos, almacena diferentes clases de datos
+# Guarda la informacion como si fueran carpetas
+source("http://bioconductor.org/biocLite.R")
+biocLite("rhdf5")
+library(rhdf5)
+created = h5createFile("example.h5")
+created
+#Escritura y lectura de fragmentos
+h5write(c(12,13,14),"example.h5","foo/A", index=list(1:3,1))
+h5read("example.h5","foo/A")
+
+
+#Webscraping
+# Extracci??n programada de informaci??n desde c??digo HTML
+
+set.seed(13435)
+x <- data.frame("var1" = sample(1:5), "var2" = sample(6:10), "var3" = sample(11:15))
+x <- x[sample(1:5),]
+x$var2[c(1,3)]= NA
+x[,1]
+x[,"var1"]
+x[1:2,"var2"]
+x[x<=3,"var1"]
+x[x>11,"var3"]
+
+subset(x, x$var1<=3 & x$var3>11)
+x[x$var1<=3 && x$var3>11,]
+x[x$var1 | x$var3>11,]
+
+
+# && Operador logico
+# & Vector 
+
+which(x$var2>8)
+x[which(x$var2>8),] #extraer las filas donde x es mayor que 8 en var2
+sort(x$var1)
+sort(x$var1, decreasing = T)
+sort(x$var2)
+sort(x$var2, decreasing = T)
+sort(x$var2, na.last = T)
+sort(x$var2, decreasing = T, na.last = T)
+
+sort(x$var1)
+order(x$var1)
+x[order(x$var1),]
+x[order(x$var2, decreasing = T, na.last = F),]
+
+library(plyr)
+arrange(x,var1)
+arrange(x,desc(var1))
+x$var4 <- rnorm(5)
+x
+cbind(x,rnorm(5))
+x
+
+#Descarga de Datos
+
+if(!dir.exists("data")){dir.create("data")}
+url <- "https://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accesType=DOWNLOAD"
+download.file(url,"./data/restaurantes.csv")
+data <- read.csv("./data/restaurantes.csv")
+
+table(data$zipCode, useNA = "ifany")
+table(data$councilDistrict,data$zipCode)
+
+if(!dir.exists("data")){dir.create("data")}
+url <- "https://data.baltimorecity.gov/api/views/k5ry-ef3g/rows.csv?accesType=DOWNLOAD"
+download.file(url,"./data/restaurantes.csv")
+data <- read.csv("./data/restaurantes.csv")
+head(data,n=3)
+tail(data,n=3)
+summary(data)
+str(data)
+
+#CLASE 30/11/2016
+quantile(data$councilDistrict,na.rm=T)
+quantile(data$councilDistrict, probs= c(0.5,0.75,0.9))
+
+table(data$zipCode, useNA="ifany")
+table(data$councilDistrict,data$zipCode) 
+
+sum(is.na(data$councilDistrict))
+any(is.na(data$councilDistrict))
+all(!is.na(data$councilDistrict))
+all(data$zipCode > 0)
+colSums(is.na(data))
+all(colSums(is.na(data)) == 0)
+
+table(data$zipCode %in% c("21212"))
+table(data$zipCode %in% c("21212","21213"))
+data[data$zipCode %in% c("21212","21213"),]
+data(UCBAdmissions)
+DF = as.data.frame(UCBAdmissions)
+summary(DF)
+xt <- xtabs(Freq ~ Gender + Admit, data = DF)
+xt
+
+warpbreaks$replicate <- rep(1:9, len = 54)
+xt = xtabs(breaks ~.,data = warpbreaks)
+xt
+summary(warpbreaks)
+dim(warpbreaks)
+ftable(xt)
+
+fakeData = rnorm(1e5)
+object.size(fakeData)
+print(object.size(fakeData), units = "Mb")
+#metadatos (800040) numeros de las filas, registro de dato, cuantos datos son (+40)
+
+#Crear variables nuevas
+#   usualmente no tenemos la variable q nos interesa
+#   hacer tranformaciones de los datos que tenemos
+#   agregar valores a la base de datos
+
+#Crear secuencias
+s1 <- seq(1,10,by=2); s1
+s2 <- seq(1,10,by=3); s2
+x <- c(1,2,8,25,100); seq(along = x) #Genera un conteo para cada uno de los elementos
+#quantile
+sq <- seq(.1,.7, by=.1); sq
+#crea variable cerca
+data$cerca <- data$neighborhood %in% c("Roland Park", "Homeland")
+table(data$cerca)
+head(data)
+#variables binarias
+data$zipError <- ifelse(data$zipCode < 0, TRUE,FALSE)
+data[data$zipError,]
+table(data$zipError, data$zipCode < 0)
+
+#variables Categ??ricas
+data$zipGrupo <- cut(data$zipCode, breaks = quantile(data$zipCode)) #cut toma max y min de un bloque de valores
+table(data$zipGrupo)
+table(data$zipGrupo, data$zipCode)
+
+#Corte simplificado
+install.packages("Hmisc")
+library(Hmisc)
+data$zipGrupo <- cut2(data$zipCode, g=4)
+table(data$zipGrupo)
 
 

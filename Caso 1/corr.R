@@ -1,7 +1,7 @@
 
 corr <- function(directorio, horizonte = 0){
   getwd()
-  setwd("~/GitHub/Programacion_Actuarial_III_OT16/specdata")
+  setwd("~/Documents/Programacion_Actuarial_III_OT16/specdata")
   completos <- function(directorio,id=1:332){
     suma1 <- numeric()
     for(i in id ){
@@ -37,4 +37,6 @@ corr <- function(directorio, horizonte = 0){
   co
   }
 
-corr("specdata",580)
+??
+
++

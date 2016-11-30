@@ -1,7 +1,7 @@
 
 completos <- function(directorio,id=1:332){
   getwd()
-  setwd("~/GitHub/Programacion_Actuarial_III_OT16/specdata")
+  setwd("~/Documents/Programacion_Actuarial_III_OT16/specdata")
   suma1 <- numeric()
   for(i in id ){
   p <- paste(formatC(i,width = 3, flag = "0"),".Csv",sep ="")

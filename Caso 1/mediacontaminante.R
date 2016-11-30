@@ -2,7 +2,7 @@
 
 mediacontaminante <- function(directorio,contaminante, id = 1:332){
   getwd()
-  setwd("~/GitHub/Programacion_Actuarial_III_OT16/specdata")
+  setwd("~/Documents/Programacion_Actuarial_III_OT16/specdata")
   n <- numeric()
   s <- numeric()
 
@@ -21,4 +21,4 @@ mediacontaminante <- function(directorio,contaminante, id = 1:332){
   }
   media
 }
-mediacontaminante("specdata","sulfate",1:20)
+mediacontaminante("specdata","sulfate",1:10)
